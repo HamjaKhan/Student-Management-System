@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        #container{            
+            width: 1000px;
+            display: grid;
+            grid-template-columns: repeat(5,1fr);
+            gap: 20px;
+        }
+        #container>div{
+            border: 1px solid red;
+            width:250px
+        }
+        #container>div>img{
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div  id=navbar>
+        <p></p>
+    </div>
+    <div id="container">
+
+    </div>
+</body>
+</html>
+<script>
+function append(){
+
+    let data=JSON.parse(localStorage.getItem("students"))||[]
+    let container=document.getElementById("container")
+    container.innerHTML=null
+    data.forEach(function(el,index){
+        // console.log(el)
+        let div=document.createElement("div")
+        let img=document.createElement("img")
+        img.src=el.image
+        let p1=document.createElement("P")
+        p1.innerText=el.name
+        let p2=document.createElement("P")
+        p2.innerText=el.course
+        let p3=document.createElement("P")
+        p3.innerText=el.unit        
+        let p4=document.createElement("P")
+        p4.innerText=el.batch
+        let btn=document.createElement("button")
+        btn.addEventListener("click",function(){
+            remove(index)
+        } )
+        btn.innerText="Remove"
+        div.append(img,p1,p2,p3,p4,btn)
+        container.append(div)
+    })
+    
+}
+append()
+function remove(index)
+{
+    // console.log(index)
+    let data=JSON.parse(localStorage.getItem("students"))||[]
+
+    let newData=data.filter(function(el,i){
+        if(i===index)
+        {
+            let trash=JSON.parse(localStorage.getItem("trash"))||[]
+            trash.push(el)
+            localStorage.setItem("tarsh",JSON.stringify(trash))
+
+        }
+        else{
+            return i!==index;
+        }
+        
+    })
+
+    localStorage.setItem("students",JSON.stringify(newData))||[]
+    append()
+    console.log(newData)
+}
+</script>
